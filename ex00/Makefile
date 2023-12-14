@@ -6,7 +6,7 @@ NAME = btc
 
 CXX = c++
 
-CXXFLAG = -Werror -Wall -Wextra -std=c++98
+CXXFLAG = -Werror -Wall -Wextra -std=c++98 -g
 
 DFLAG = -MMD -MP
 

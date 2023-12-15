@@ -6,7 +6,7 @@
 /*   By: pmaimait <pmaimait@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 14:25:48 by pmaimait          #+#    #+#             */
-/*   Updated: 2023/12/14 19:03:41 by pmaimait         ###   ########.fr       */
+/*   Updated: 2023/12/15 11:57:26 by pmaimait         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,13 +98,10 @@ void    BitcointExchange::parsing(std::string line)
     // Use sscanf to parse the date and value parts
     if (std::sscanf(cleanedLine.c_str(), "%4d-%2d-%2d|%f", &date.tm_year, &date.tm_mon, &date.tm_mday, &value) == 4) 
     {
-        
-        // date.tm_year -= 1900; // Adjust the year
-        // date.tm_mon -= 1;     // Adjust the month
-        // std::cout << tmToString(date) << std::endl;
-        
         if (std::mktime(&date) == -1 || date.tm_year < 2009 || date.tm_year > 2022)  
         {
+            date.tm_year -= 1900; // Adjust the year
+            date.tm_mon -= 1;     // Adjust the month
             element.first = "Error: bad input => " + tmToString(date);
             element.second = -1;
         }
@@ -129,11 +126,7 @@ void    BitcointExchange::parsing(std::string line)
             element.first =  "Error: bad input => " + cleanedLine;
             element.second = -1;
         }
-    // std::cout << "when save " << element.first << "|" << element.second <<std::endl;
     display(element.first, element.second);
-    // for (InputData::iterator it = InputData.begin(); it != InputData.end(); ++it) {
-    //     std::cout << "date: " << it->first << ", Value: " << it->second << std::endl;
-    // }  
 }
 
 
@@ -144,8 +137,6 @@ std::string tmToString(const std::tm& date)
     // Use strftime to format struct tm as a string
     
     std::strftime(buffer, sizeof(buffer), "%Y-%m-%d", &date);
-
-    // Compare the formatted string with the input string
     return (buffer);
 }
 
@@ -159,26 +150,14 @@ void BitcointExchange::display(std::string date, float value)
         }
         else
         {
-            std::cout << date << " => " << value << " = ";
             BitcointExchange::iterator DB = find(date);
             if (DB == end())
             {
-                struct tm  tmp;
-                memset(&tmp, 0, sizeof(tmp)); 
-                if (std::sscanf(date.c_str(), "%d-%d-%d", &tmp.tm_year, &tmp.tm_mon, &tmp.tm_mday) != 3)
-                {
-                    // Handle the error, print a message or throw an exception
-                    std::cerr << "Error parsing date: " << date << std::endl;
-                }
-                // tmp.tm_year += 1900;
-                // tmp.tm_mon += 1;
-                while (DB == end())
-                {
-                    tmp.tm_mday--;
-                    DB = find(tmToString(tmp));
-                }
+                DB =lower_bound(date);
             }
+            std::cout << date << " => " << value << " = ";
             std::cout << DB->second * value << std::endl;
+        
         }
 }
 

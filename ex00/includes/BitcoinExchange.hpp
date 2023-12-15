@@ -6,7 +6,7 @@
 /*   By: pmaimait <pmaimait@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 14:25:42 by pmaimait          #+#    #+#             */
-/*   Updated: 2023/12/14 18:59:53 by pmaimait         ###   ########.fr       */
+/*   Updated: 2023/12/15 16:20:41 by pmaimait         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ class BitcointExchange : public std::map<std::string, float>
 {
     private :
         InputData InputData;
-        struct tm date;
+        // struct tm date;
         BitcointExchange();
 
     public :

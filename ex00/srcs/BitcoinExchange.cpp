@@ -6,7 +6,7 @@
 /*   By: pmaimait <pmaimait@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 14:25:48 by pmaimait          #+#    #+#             */
-/*   Updated: 2023/12/15 11:57:26 by pmaimait         ###   ########.fr       */
+/*   Updated: 2023/12/15 16:21:16 by pmaimait         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ BitcointExchange::BitcointExchange(){}
 BitcointExchange::BitcointExchange(const BitcointExchange &obj){*this = obj;}
 BitcointExchange &BitcointExchange::operator=(const BitcointExchange &obj)
 {
-    (void)obj;
+    InputData = obj.InputData;
     return *this;
 }
 BitcointExchange::~BitcointExchange(){}
@@ -92,6 +92,7 @@ void    BitcointExchange::parsing(std::string line)
         }
     }
     std::pair<std::string, float> element;
+    struct tm date;
     float value;
     memset(&date, 0, sizeof(date)); // Initialize date structure
 
@@ -153,7 +154,10 @@ void BitcointExchange::display(std::string date, float value)
             BitcointExchange::iterator DB = find(date);
             if (DB == end())
             {
-                DB =lower_bound(date);
+                DB = lower_bound(date);
+                DB --;
+                if (date == "2009-01-01")
+                    DB = begin();
             }
             std::cout << date << " => " << value << " = ";
             std::cout << DB->second * value << std::endl;

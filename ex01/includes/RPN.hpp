@@ -6,7 +6,7 @@
 /*   By: pmaimait <pmaimait@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:02:08 by pmaimait          #+#    #+#             */
-/*   Updated: 2023/12/15 16:56:58 by pmaimait         ###   ########.fr       */
+/*   Updated: 2023/12/18 11:52:14 by pmaimait         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 #include<iostream>
 #include <stack>
+#include <iostream>
+#include <stdexcept>
+#include <cctype>
 
 class RPN : public std::stack<long long>
 {

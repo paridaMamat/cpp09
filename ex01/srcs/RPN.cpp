@@ -6,7 +6,7 @@
 /*   By: pmaimait <pmaimait@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:02:00 by pmaimait          #+#    #+#             */
-/*   Updated: 2023/12/18 11:29:59 by pmaimait         ###   ########.fr       */
+/*   Updated: 2023/12/18 11:52:06 by pmaimait         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,7 @@ std::string nospace(std::string &src)
     return cleanedLine;
 }
 
-#include <iostream>
-#include <stdexcept>
-#include <cctype>
+
 
 bool isValidString(const std::string& input) {
     for (size_t i = 1; i < input.size(); i ++)

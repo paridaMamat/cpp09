@@ -6,7 +6,7 @@
 /*   By: pmaimait <pmaimait@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 14:25:48 by pmaimait          #+#    #+#             */
-/*   Updated: 2023/12/15 16:21:16 by pmaimait         ###   ########.fr       */
+/*   Updated: 2023/12/20 14:13:01 by pmaimait         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,15 @@ void    BitcointExchange::fill(const std::string &sourceFile)
     file.close();
 }
 
+bool isMonthInArray(int month, const int tab[], size_t size) {
+    for (size_t i = 0; i < size; ++i) {
+        if (tab[i] == month) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void    BitcointExchange::parsing(std::string line)
 {
     // Remove spaces from the line
@@ -97,13 +106,15 @@ void    BitcointExchange::parsing(std::string line)
     memset(&date, 0, sizeof(date)); // Initialize date structure
 
     // Use sscanf to parse the date and value parts
-    if (std::sscanf(cleanedLine.c_str(), "%4d-%2d-%2d|%f", &date.tm_year, &date.tm_mon, &date.tm_mday, &value) == 4) 
-    {
-        if (std::mktime(&date) == -1 || date.tm_year < 2009 || date.tm_year > 2022)  
+    if ((std::sscanf(cleanedLine.c_str(), "%4d-%2d-%2d|%f", &date.tm_year, &date.tm_mon, &date.tm_mday, &value) == 4))
+    {  
+        std::string time = cleanedLine.substr(0, (cleanedLine.find('|')));
+        int month = (time[5] - '0') * 10 + (time[6] - '0');
+        int day = (time[8] - '0') * 10 + (time[9] - '0');
+        int tab[4] = {4,6,9,11};
+        if (std::mktime(&date) == -1 || date.tm_year < 2009 || date.tm_year > 2022 || time.size() != 10 || month > 12 || day > 31)  
         {
-            date.tm_year -= 1900; // Adjust the year
-            date.tm_mon -= 1;     // Adjust the month
-            element.first = "Error: bad input => " + tmToString(date);
+            element.first = "Error: bad input => " + time;
             element.second = -1;
         }
         else if (value < 0)
@@ -116,11 +127,16 @@ void    BitcointExchange::parsing(std::string line)
             element.first = "Error: too large a number.";
             element.second = -1;
         }
+        else if ((isMonthInArray(month, tab, 4) && day > 30) || (month == 2 && day > 28))
+        {
+            element.first =  "Error: bad input => " + time;
+            element.second = -1;
+        }
         else
         {
-            element.first = cleanedLine.substr(0, line.find('|') - 1);
-            element.second = value; 
-        }     
+            element.first = time;
+            element.second = value;
+        }  
     }
     else
         {

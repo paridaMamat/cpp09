@@ -6,7 +6,7 @@
 /*   By: pmaimait <pmaimait@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 15:34:10 by pmaimait          #+#    #+#             */
-/*   Updated: 2023/12/14 19:04:01 by pmaimait         ###   ########.fr       */
+/*   Updated: 2023/12/20 14:16:39 by pmaimait         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void    InvalidInput(int ac)
     if (ac != 2)
     {
         if (ac < 2)
-            throw (std::runtime_error("[ERROR] Need an argument"));
+            throw (std::runtime_error("Error: could not open file."));
         else
             throw (std::runtime_error("[ERROR] Too many argument"));
     }

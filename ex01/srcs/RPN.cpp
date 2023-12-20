@@ -6,7 +6,7 @@
 /*   By: pmaimait <pmaimait@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:02:00 by pmaimait          #+#    #+#             */
-/*   Updated: 2023/12/18 11:52:06 by pmaimait         ###   ########.fr       */
+/*   Updated: 2023/12/20 19:14:54 by pmaimait         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,30 +34,28 @@ std::string nospace(std::string &src)
     return cleanedLine;
 }
 
-
+bool isOps(char a)
+{
+    if (a != '+' && a != '-' && a != '*' && a != '/')
+        return false;
+    return true;
+}
 
 bool isValidString(const std::string& input) {
-    for (size_t i = 1; i < input.size(); i ++)
+    int countNumber = 0;
+    int countOps = 0;
+    for (size_t i = 0; i < input.size(); i ++)
     {
-        if (!isdigit(input[i]) && (input[i] != '+' && input[i] != '-' && input[i] != '*' && input[i] != '/'))
+        if (isdigit(input[i]))
+            countNumber++;
+        if (isOps(input[i]))
+            countOps++;
+        if (!isdigit(input[i]) && (isOps(input[i]) == false))
             throw (std::runtime_error("Error"));  
     }  
-  
     // Check if the string starts with two number
-    if ((!isdigit(input[0]) && !isdigit(input[1]) )|| (input.size() % 2 == 0))
+    if ((!isdigit(input[0]) && !isdigit(input[1]) ) || (countNumber != (countOps + 1)) || !isOps(input[input.size() - 1]))
         return false;
-
-    // Check if the characters in odd positions are digits
-    for (size_t i = 1; i < input.size(); i += 2) {
-        if (!isdigit(input[i]))
-            return false;
-    }
-
-    // Check if the characters in even positions are operators
-    for (size_t i = 2; i < input.size(); i += 2) {
-        if (input[i] != '+' && input[i] != '-' && input[i] != '*' && input[i] != '/') 
-            return false;
-    }
     return true;
 }
 
@@ -89,32 +87,33 @@ RPN::RPN(std::string &src)
     if(_src == "")
         throw (std::runtime_error("[ERROR] there is nothing in argument, write something"));
     if (!isValidString(_src))
-        throw (std::runtime_error("0")); 
+        throw (std::runtime_error("Error")); 
 
     // Create a stack to store characters
-    std::stack<char> charStack;
-
-    // Save characters in the stack in reverse order
-    for (int i = _src.size() - 1; i >= 0; --i) {
-        charStack.push(_src[i]);
-    }
-    
-    if(!charStack.empty())
+    std::stack<int> numberStack;
+    size_t i = 0;
+    int tmp = 0;
+    while (i < _src.size())
     {
-        int pos1 = charToInt(charStack.top());
-        charStack.pop();
-        int pos2 = charToInt(charStack.top());
-        charStack.pop();
-        char ope = charStack.top();
-        charStack.pop();
-        int tmp = calcule(pos1, pos2, ope);
-        while(!charStack.empty())
+        while (isdigit(_src[i]))
         {
-            int pos2 = charToInt(charStack.top());
-            charStack.pop();
-            tmp = calcule(tmp, pos2, charStack.top());
-            charStack.pop();
+            // std::cout << _src[i] - '0' << std::endl;
+            numberStack.push(_src[i] - '0');
+            i++;
         }
-        std::cout << tmp <<std::endl;
+        
+        if (isOps(_src[i]) == true)
+        {
+            int pos1 = numberStack.top();
+            numberStack.pop();
+            int pos2 = numberStack.top();
+            numberStack.pop();
+            // std::cout << "pos1 = " << pos1 << " pos2 = " << pos2 << " ope = " << _src[i] << std::endl;
+            tmp = calcule(pos2, pos1, _src[i]);
+            // std::cout << "result = " << tmp << std::endl;
+            numberStack.push(tmp);
+        }
+        i++;
     }
+    std::cout << numberStack.top() <<std::endl;
 }

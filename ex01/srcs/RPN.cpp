@@ -6,7 +6,7 @@
 /*   By: pmaimait <pmaimait@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:02:00 by pmaimait          #+#    #+#             */
-/*   Updated: 2023/12/20 19:14:54 by pmaimait         ###   ########.fr       */
+/*   Updated: 2023/12/22 10:22:32 by pmaimait         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ RPN::RPN(std::string &src)
     {
         while (isdigit(_src[i]))
         {
-            // std::cout << _src[i] - '0' << std::endl;
             numberStack.push(_src[i] - '0');
             i++;
         }
@@ -108,9 +107,7 @@ RPN::RPN(std::string &src)
             numberStack.pop();
             int pos2 = numberStack.top();
             numberStack.pop();
-            // std::cout << "pos1 = " << pos1 << " pos2 = " << pos2 << " ope = " << _src[i] << std::endl;
             tmp = calcule(pos2, pos1, _src[i]);
-            // std::cout << "result = " << tmp << std::endl;
             numberStack.push(tmp);
         }
         i++;

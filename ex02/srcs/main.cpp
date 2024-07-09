@@ -6,7 +6,7 @@
 /*   By: pmaimait <pmaimait@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 13:29:33 by pmaimait          #+#    #+#             */
-/*   Updated: 2023/12/20 11:23:38 by pmaimait         ###   ########.fr       */
+/*   Updated: 2023/12/22 11:11:17 by pmaimait         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,13 @@ int isPositiveInteger(const std::string& str) {
             throw std::invalid_argument("Error: Invalid input argument. it should be a positive integer.");
         }
     }
-    int value = atoi(str.c_str());
-    if (value == -1)
-        throw std::invalid_argument("Error: integer is out of range."); 
-    return value;
+    const long long int_max = static_cast<long long>(INT_MAX);
+    long long value = atoll(str.c_str()); 
+
+    if (value < 0 || value > int_max) {
+        throw std::invalid_argument("Error: Integer is out of range.");
+    }
+    return static_cast<int>(value);
 }
 int     main(int ac, char **av)
 {
@@ -44,7 +47,7 @@ int     main(int ac, char **av)
             deq.push_back(value);   
         }
         std::cout << "Before: ";
-        for (size_t i = 1; i < vec.size(); i++)
+        for (size_t i = 0; i < vec.size(); i++)
         {
              std::cout << vec[i] << " " ;
         }     

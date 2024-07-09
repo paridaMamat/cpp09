@@ -6,7 +6,7 @@
 /*   By: pmaimait <pmaimait@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:02:00 by pmaimait          #+#    #+#             */
-/*   Updated: 2023/12/22 10:22:32 by pmaimait         ###   ########.fr       */
+/*   Updated: 2024/07/09 15:41:33 by pmaimait         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ RPN::RPN(std::string &src)
         
         if (isOps(_src[i]) == true)
         {
+            if (numberStack.size() < 2) 
+                throw std::invalid_argument("Invalid input, not enough numbers");
             int pos1 = numberStack.top();
             numberStack.pop();
             int pos2 = numberStack.top();
